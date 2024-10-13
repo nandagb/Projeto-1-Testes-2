@@ -43,7 +43,7 @@ public class Conta {
             return false;
         }
         else{
-            this.saldo -= valor;
+            this.saldo = valor;
             return true;
         }
     }
