@@ -1,0 +1,75 @@
+package com.example;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+@Test
+public class BancoTest {
+
+    private Banco banco;
+    private Conta contaMock1;
+    private Conta contaMock2;
+
+    @BeforeEach
+    void setUp() {
+        banco = new Banco();
+        banco.setId(1L);
+        banco.setNome("Banco Teste");
+        banco.setContas(new ArrayList<>());
+
+        // Mockando contas
+        contaMock1 = Mockito.mock(Conta.class);
+        contaMock2 = Mockito.mock(Conta.class);
+    }
+
+    @Test
+    void testBancoConstructorWithNome() {
+        Banco bancoComNome = new Banco("Banco Teste Nome");
+        assertEquals("Banco Teste Nome", bancoComNome.getNome());
+        assertNull(bancoComNome.getContas());
+    }
+
+    @Test
+    void testAddConta() {
+        banco.addConta(contaMock1);
+        assertEquals(1, banco.getContas().size());
+        assertTrue(banco.getContas().contains(contaMock1));
+    }
+
+    @Test
+    void testAddContaById() {
+        banco.addContaById(2L);
+        assertEquals(1, banco.getContas().size());
+        assertEquals(2L, banco.getContas().get(0).getId());
+    }
+
+    @Test
+    void testTransferenciaComSucesso() {
+        when(contaMock1.debitar(100.0)).thenReturn(true);
+        when(contaMock2.creditar(100.0)).thenReturn(true);
+
+        Boolean resultado = banco.transferencia(contaMock1, contaMock2, 100.0);
+        assertTrue(resultado);
+
+        verify(contaMock1, times(1)).debitar(100.0);
+        verify(contaMock2, times(1)).creditar(100.0);
+    }
+
+    @Test
+    void testTransferenciaSemSucesso() {
+        when(contaMock1.debitar(100.0)).thenReturn(false);
+
+        Boolean resultado = banco.transferencia(contaMock1, contaMock2, 100.0);
+        assertFalse(resultado);
+
+        verify(contaMock1, times(1)).debitar(100.0);
+        verify(contaMock2, never()).creditar(anyDouble());
+    }
+}
