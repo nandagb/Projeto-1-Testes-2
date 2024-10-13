@@ -2,6 +2,8 @@ package com.example;
 
 import java.util.List;
 
+import com.example.Banco;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,14 +21,23 @@ public class Banco {
 
     private List<Conta> contas;
 
+    public Banco(String nome){
+        this.nome = nome;
+    }
+
     public void addConta(Conta conta){
         this.contas.add(conta);
     }
 
-    public void transferencia(Conta origem, Conta destino, Double valor){
-        if(origem.getSaldo() >= valor){
-            origem.setSaldo(origem.getSaldo() - valor);
-            destino.setSaldo(destino.getSaldo() + valor);
+    public void addContaById(Long id){
+        Conta conta = new Conta(id);
+        this.contas.add(conta);
+    }
+
+    public Boolean transferencia(Conta origem, Conta destino, Double valor){
+        if(origem.debitar(valor)){
+            return destino.creditar(valor);
         }
+        return false;
     }
 }

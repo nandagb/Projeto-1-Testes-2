@@ -26,6 +26,33 @@ public class Conta {
 
     private char digitoVerificador;
 
+    public Conta(Long id) {
+        this.id = id;
+    }
+
+    public Double getSaldo() {
+        return this.saldo;
+    }
+
+    public void setSaldo(double saldo) {
+        this.saldo = saldo;
+    }
+
+    public Boolean debitar(double valor) {
+        if(this.saldo - valor < 0){
+            return false;
+        }
+        else{
+            this.saldo -= valor;
+            return true;
+        }
+    }
+
+    public Boolean creditar(double valor){
+        this.saldo += valor;
+        return true;
+    }
+
 
     /**
      * Says hello to the world.
