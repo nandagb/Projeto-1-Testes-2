@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 @EqualsAndHashCode
 public class Conta {
 
@@ -26,8 +25,13 @@ public class Conta {
 
     private char digitoVerificador;
 
+    public Conta() {
+        this.saldo = 0.0;
+    }
+    
     public Conta(Long id) {
         this.id = id;
+        this.saldo = 0.0;
     }
 
     public Double getSaldo() {

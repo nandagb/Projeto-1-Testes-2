@@ -1,6 +1,6 @@
 package com.example;
 
-import java.util.List;
+import java.util.*;
 
 import com.example.Banco;
 
@@ -22,7 +22,16 @@ public class Banco {
     private List<Conta> contas;
 
     public Banco(String nome){
+        this.contas = new ArrayList<>();
         this.nome = nome;
+    }
+
+    public void setId(Long id){
+        this.id = id;
+    }
+
+    public Long getId(){
+        return this.id;
     }
 
     public void addConta(Conta conta){
